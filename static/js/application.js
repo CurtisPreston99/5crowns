@@ -5,12 +5,19 @@ if (window.location.protocol == "https:") {
   var ws_scheme = "ws://"
 };
 
+// var url = ws_scheme + location.host
+var url= "ws://crowns5.herokuapp.com/"
 
-var inbox = new WebSocket(ws_scheme + location.host + "/receive");
-var outbox = new WebSocket(ws_scheme + location.host + "/submit");
+var inbox = new WebSocket(url + "/receive");
+inbox.binaryType = 'arraybuffer';
+var outbox = new WebSocket(url + "/submit");
 
 inbox.onmessage = function(message) {
-  var data = JSON.parse(message.data);
+  var data = message.data;
+  var decoder = new TextDecoder("utf-8");
+  var text = decoder.decode(data);
+  var data = JSON.parse(text);
+
   $("#chat-text").append("<div class='panel panel-default'><div class='panel-heading'>" + $('<span/>').text(data.handle).html() + "</div><div class='panel-body'>" + $('<span/>').text(data.text).html() + "</div></div>");
   $("#chat-text").stop().animate({
     scrollTop: $('#chat-text')[0].scrollHeight

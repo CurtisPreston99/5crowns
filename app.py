@@ -2,7 +2,7 @@ import os
 import logging
 import redis
 import gevent
-from flask import Flask, render_template
+from flask import Flask, render_template,Blueprint
 import flask_sockets
 
 def add_url_rule(self, rule, _, f, **options):
@@ -82,3 +82,9 @@ def outbox(ws):
     while not ws.closed:
         # Context switch while `ChatBackend.start` is running in the background.
         gevent.sleep(0.1)
+
+@sockets.route('/room/<room>', websocket=True)
+def outbox(ws,room):
+    """Sends outgoing chat messages, via `ChatBackend`."""
+    print(room)
+    ws.send(room)
