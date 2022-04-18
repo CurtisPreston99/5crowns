@@ -3,14 +3,19 @@ import logging
 import redis
 import gevent
 from flask import Flask, render_template
-from flask_sockets import Sockets
+import flask_sockets
+
+def add_url_rule(self, rule, _, f, **options):
+    self.url_map.add(flask_sockets.Rule(rule, endpoint=f, websocket=True))
+
+flask_sockets.Sockets.add_url_rule = add_url_rule
 
 REDIS_URL = os.environ['REDIS_URL']
 REDIS_CHAN = 'chat'
 
 app = Flask(__name__)
 
-sockets = Sockets(app)
+sockets = flask_sockets.Sockets(app)
 redis = redis.from_url(REDIS_URL)
 
 class ChatBackend(object):
@@ -57,7 +62,7 @@ chats.start()
 def hello():
     return render_template('index.html')
 
-@sockets.route('/submit', websocket=True)
+@flask_sockets.sockets.route('/submit', websocket=True)
 def inbox(ws):
     """Receives incoming chat messages, inserts them into Redis."""
     while not ws.closed:
@@ -69,7 +74,7 @@ def inbox(ws):
             app.logger.info(u'Inserting message: {}'.format(message))
             redis.publish(REDIS_CHAN, message)
 
-@sockets.route('/receive', websocket=True)
+@flask_sockets.sockets.route('/receive', websocket=True)
 def outbox(ws):
     """Sends outgoing chat messages, via `ChatBackend`."""
     chats.register(ws)
