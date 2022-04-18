@@ -57,7 +57,7 @@ chats.start()
 def hello():
     return render_template('index.html')
 
-@sockets.route('/submit')
+@sockets.route('/submit', websocket=True)
 def inbox(ws):
     """Receives incoming chat messages, inserts them into Redis."""
     while not ws.closed:
@@ -69,7 +69,7 @@ def inbox(ws):
             app.logger.info(u'Inserting message: {}'.format(message))
             redis.publish(REDIS_CHAN, message)
 
-@sockets.route('/receive')
+@sockets.route('/receive', websocket=True)
 def outbox(ws):
     """Sends outgoing chat messages, via `ChatBackend`."""
     chats.register(ws)
