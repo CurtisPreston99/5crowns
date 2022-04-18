@@ -6,8 +6,8 @@ if (window.location.protocol == "https:") {
 };
 
 
-var inbox = new ReconnectingWebSocket(ws_scheme + location.host + "/receive");
-var outbox = new ReconnectingWebSocket(ws_scheme + location.host + "/submit");
+var inbox = new WebSocket(ws_scheme + location.host + "/receive");
+var outbox = new WebSocket(ws_scheme + location.host + "/submit");
 
 inbox.onmessage = function(message) {
   var data = JSON.parse(message.data);
