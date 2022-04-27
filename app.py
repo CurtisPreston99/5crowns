@@ -139,7 +139,7 @@ def outbox(ws):
 def updates(ws,room):
     print(room)
     ws.send(room)
-    gameServer.register(ws,room)
+    gameServer.register(ws,int(room))
     while not ws.closed:
     # Sleep to prevent *contstant* context-switches.
         gevent.sleep(0.1)
