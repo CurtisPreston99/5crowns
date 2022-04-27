@@ -19,6 +19,12 @@ app = Flask(__name__)
 sockets = flask_sockets.Sockets(app)
 redis = redis.from_url(REDIS_URL)
 
+class GameStateUpdate:
+  def __init__(self, room, message):
+    self.room = room
+    self.message = message
+
+
 class ChatBackend(object):
     """Interface for registering and updating WebSocket clients."""
 
@@ -61,7 +67,7 @@ class GameBackend(object):
     """Interface for registering and updating WebSocket clients."""
 
     def __init__(self):
-        self.clients = list()
+        self.clients = [None]*9999
         self.pubsub = redis.pubsub()
         self.pubsub.subscribe(REDIS_GAME)
 
@@ -72,24 +78,25 @@ class GameBackend(object):
                 app.logger.info(u'Sending message: {}'.format(data))
                 yield data
 
-    def register(self, client):
+    def register(self, client,room):
         """Register a WebSocket connection for Redis updates."""
-        self.clients.append(client)
+        self.clients[room]=client
 
     def send(self, client, data):
         """Send given data to the registered client.
         Automatically discards invalid connections."""
         try:
             client.send(data)
-        except Exception:
+        except ex:
+            app.logger.info(ex)
             self.clients.remove(client)
 
     def run(self):
         """Listens for new messages in Redis, and sends them to clients."""
         for data in self.__iter_data():
-            for client in self.clients:
-                if(data.room == client.room):
-                    gevent.spawn(self.send, client, data)
+            roomClients = self.clients[data.room]
+            for client in roomClients:
+                gevent.spawn(self.send, client, data)
 
     def start(self):
         """Maintains Redis subscription in the background."""
@@ -130,17 +137,17 @@ def outbox(ws):
 
 @sockets.route('/room/<room>', websocket=True)
 def updates(ws,room):
-    """Sends outgoing chat messages, via `ChatBackend`."""
     print(room)
     ws.room = room
-    gameServer.register(ws)
     ws.send(room)
+    gameServer.register(ws)
     while not ws.closed:
     # Sleep to prevent *contstant* context-switches.
         gevent.sleep(0.1)
         message = ws.receive()
 
         if message:
+            update = GameStateUpdate(room,message)
             app.logger.info(u'Inserting message: {}'.format(message))
-            redis.publish(REDIS_GAME, message)
+            redis.publish(REDIS_GAME, update)
 
