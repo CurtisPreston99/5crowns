@@ -138,9 +138,8 @@ def outbox(ws):
 @sockets.route('/room/<room>', websocket=True)
 def updates(ws,room):
     print(room)
-    ws.room = room
     ws.send(room)
-    gameServer.register(ws)
+    gameServer.register(ws,room)
     while not ws.closed:
     # Sleep to prevent *contstant* context-switches.
         gevent.sleep(0.1)
