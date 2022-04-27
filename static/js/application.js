@@ -5,8 +5,8 @@ if (window.location.protocol == "https:") {
   var ws_scheme = "ws://"
 };
 
-// var url = ws_scheme + location.host
-var url= "ws://crowns5.herokuapp.com/"
+var url = ws_scheme + location.host
+var url=  ws_scheme +"crowns5.herokuapp.com/"
 
 var inbox = new WebSocket(url + "/receive");
 inbox.binaryType = 'arraybuffer';
