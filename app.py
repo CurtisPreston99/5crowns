@@ -23,6 +23,9 @@ class GameStateUpdate:
   def __init__(self, room, message):
     self.room = room
     self.message = message
+  
+  def string(self):
+      return f'{self.room}:{self.message}'
 
 
 class ChatBackend(object):
@@ -148,6 +151,7 @@ def updates(ws,room):
         if message:
             app.logger.info(u'Inserting message: {}'.format(message))
             update = GameStateUpdate(room,message)
+            app.logger.info(u'Inserting message: {}'.format(update.string()))
             # TODO make update into bytes, string, int or float first.
             redis.publish(REDIS_GAME, update)
 
