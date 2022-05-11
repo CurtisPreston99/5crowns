@@ -85,7 +85,11 @@ class GameBackend:
 
     def register(self, client,room):
         """Register a WebSocket connection for Redis updates."""
-        self.clients[room]=client
+        clientList = self.clients[room]
+        if(clientList):
+            self.clients[room] = clientList.append(client)
+        else:
+            self.clients[room] = [client]
 
     def send(self, client, data):
         """Send given data to the registered client.
