@@ -99,9 +99,10 @@ class GameBackend:
     def run(self):
         """Listens for new messages in Redis, and sends them to clients."""
         for data in self.__iter_data():
-            roomClients = self.clients[data.room]
-            for client in roomClients:
-                gevent.spawn(self.send, client, data)
+            print(data);
+            # roomClients = self.clients[data.room]
+            # for client in roomClients:
+            #     gevent.spawn(self.send, client, data)
 
     def start(self):
         """Maintains Redis subscription in the background."""
