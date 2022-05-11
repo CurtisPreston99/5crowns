@@ -79,7 +79,7 @@ class GameBackend(object):
         for message in self.pubsub.listen():
             data = message.get('data')
             if message['type'] == 'message':
-                app.logger.info(u'Sending message: {}'.format(data))
+                print(u'Sending message: {}'.format(data))
                 yield data
 
     def register(self, client,room):
@@ -90,6 +90,7 @@ class GameBackend(object):
         """Send given data to the registered client.
         Automatically discards invalid connections."""
         try:
+            print(data)
             client.send(data)
         except ex:
             app.logger.info(ex)
