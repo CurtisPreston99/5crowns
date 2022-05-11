@@ -5,6 +5,7 @@ import redis
 import gevent
 from flask import Flask, render_template,Blueprint
 import flask_sockets
+import codecs
 
 def add_url_rule(self, rule, _, f, **options):
     self.url_map.add(flask_sockets.Rule(rule, endpoint=f, websocket=True))
@@ -99,10 +100,15 @@ class GameBackend:
     def run(self):
         """Listens for new messages in Redis, and sends them to clients."""
         for data in self.__iter_data():
-            print(data);
-            # roomClients = self.clients[data.room]
-            # for client in roomClients:
-            #     gevent.spawn(self.send, client, data)
+            dataString = codecs.decode(data, 'UTF-8')
+            print(data)
+            print(dataString)
+            room,message = dataString.split(":",1)
+            roomClients = self.clients[room]
+            print(room,message)
+
+            for client in roomClients:
+                gevent.spawn(self.send, client, message)
 
     def start(self):
         """Maintains Redis subscription in the background."""
