@@ -150,9 +150,9 @@ def updates(ws,room):
         message = ws.receive()
 
         if message:
-            app.logger.info(u'Inserting message: {}'.format(message))
+            print(u'Inserting message: {}'.format(message))
             update = GameStateUpdate(room,message)
             updateSting = update.string()
-            app.logger.info(u'Inserting message: {}'.format(updateSting))
+            print(u'Inserting message: {}'.format(updateSting))
             redis.publish(REDIS_GAME, updateSting)
 
