@@ -67,7 +67,7 @@ class ChatBackend(object):
         gevent.spawn(self.run)
 
 
-class GameBackend(object):
+class GameBackend:
     """Interface for registering and updating WebSocket clients."""
 
     def __init__(self):
