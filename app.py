@@ -146,7 +146,8 @@ def updates(ws,room):
         message = ws.receive()
 
         if message:
-            update = GameStateUpdate(room,message)
             app.logger.info(u'Inserting message: {}'.format(message))
+            update = GameStateUpdate(room,message)
+            # TODO make update into bytes, string, int or float first.
             redis.publish(REDIS_GAME, update)
 
