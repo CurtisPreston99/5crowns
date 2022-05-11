@@ -104,7 +104,7 @@ class GameBackend:
             print(data)
             print(dataString)
             room,message = dataString.split(":",1)
-            roomClients = self.clients[room]
+            roomClients = self.clients[int(room)]
             print(room,message)
 
             for client in roomClients:
