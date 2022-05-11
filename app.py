@@ -87,7 +87,8 @@ class GameBackend:
         """Register a WebSocket connection for Redis updates."""
         clientList = self.clients[room]
         if(clientList):
-            self.clients[room] = clientList.append(client)
+            clientList.append(client)
+            self.clients[room] = clientList
         else:
             self.clients[room] = [client]
 
