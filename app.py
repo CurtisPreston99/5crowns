@@ -1,5 +1,6 @@
 import os
 import logging
+import string
 import redis
 import gevent
 from flask import Flask, render_template,Blueprint
@@ -24,7 +25,7 @@ class GameStateUpdate:
     self.room = room
     self.message = message
   
-  def string(self):
+  def string(self) -> str:
       return f'{self.room}:{self.message}'
 
 
@@ -151,7 +152,7 @@ def updates(ws,room):
         if message:
             app.logger.info(u'Inserting message: {}'.format(message))
             update = GameStateUpdate(room,message)
-            app.logger.info(u'Inserting message: {}'.format(update.string()))
-            # TODO make update into bytes, string, int or float first.
-            redis.publish(REDIS_GAME, update)
+            updateSting = update.string()
+            app.logger.info(u'Inserting message: {}'.format(updateSting))
+            redis.publish(REDIS_GAME, updateSting)
 
