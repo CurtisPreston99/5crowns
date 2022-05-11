@@ -106,9 +106,9 @@ class GameBackend:
             room,message = dataString.split(":",1)
             roomClients = self.clients[int(room)]
             print(room,message)
-
-            for client in roomClients:
-                gevent.spawn(self.send, client, message)
+            if(roomClients):
+                for client in roomClients:
+                    gevent.spawn(self.send, client, message)
 
     def start(self):
         """Maintains Redis subscription in the background."""
