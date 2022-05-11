@@ -122,6 +122,9 @@ class GameBackend:
 gameServer = GameBackend()
 gameServer.start()
 
+chats = ChatBackend()
+chats.start()
+
 @app.route('/')
 def hello():
     return render_template('index.html')
