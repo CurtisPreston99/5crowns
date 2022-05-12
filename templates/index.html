@@ -1,15 +1,54 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Python Websockets Chat Demo</title>
-    <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="static/css/application.css" rel="stylesheet" media="screen">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    
-    <script type="text/javascript" src="static/js/jquery-2.0.3.min.js"></script>
+
+<head>
+  <title>5 Crowns</title>
+
+  <script src="https://unpkg.com/vue@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue3-sfc-loader"></script>
+  <script src="https://unpkg.com/vuex@4"></script>
+</head>
+
+<body>
+  <div id="app"></div>
+
+  <script type="module">
+    const options = {
+      moduleCache: {
+        vue: Vue,
+      },
+      getFile(url) {
+        return fetch(url).then(resp =>
+          resp.ok ? resp.text() : Promise.reject(resp)
+        );
+      },
+      addStyle(styleStr) {
+        const style = document.createElement("style");
+        style.textContent = styleStr;
+        const ref = document.head.getElementsByTagName("style")[0] || null;
+        document.head.insertBefore(style, ref);
+      },
+      log(type, ...args) {
+        console.log(type, ...args);
+      },
+    };
+
+    const { loadModule, version } = window["vue3-sfc-loader"];
+
+    const app = Vue.createApp({
+      components: {
+        "base-component": Vue.defineAsyncComponent(() =>
+          loadModule("./static/components/Base.vue", options)
+        ),
+      },
+      template: `<base-component/>`,
+    });
+
+    app.mount("#app");
+  </script>
+  <!-- <script type="text/javascript" src="static/js/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="static/js/reconnecting-websocket.min.js"></script>
-    <script type="text/javascript" src="static/js/application.js"></script>
-  </body>
+    <script type="text/javascript" src="static/js/application.js"></script> -->
+</body>
+
 </html>
