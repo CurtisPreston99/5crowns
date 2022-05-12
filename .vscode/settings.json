@@ -1,3 +1,4 @@
 {
-    "vue3snippets.enable-compile-vue-file-on-did-save-code": true
+    "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe",
+    "terminal.integrated.shellArgs.windows": ["/k nodevars.bat"]
 }

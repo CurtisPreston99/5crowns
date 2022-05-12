@@ -1,1 +1,1 @@
-source mypython/bin/activate
+source venv/bin/activate

@@ -1,54 +1,12 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-  <title>5 Crowns</title>
-
-  <script src="https://unpkg.com/vue@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue3-sfc-loader"></script>
-  <script src="https://unpkg.com/vuex@4"></script>
-</head>
-
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <title>Crown5Frontend</title>
+  <base href="/static/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" href="styles.ef46db3751d8e999.css"></head>
 <body>
-  <div id="app"></div>
+  <app-root></app-root>
+<script src="runtime.6ba4d3b0e429bfd6.js" type="module"></script><script src="polyfills.f0f23e9d4aab5e88.js" type="module"></script><script src="main.b64cee073420b958.js" type="module"></script>
 
-  <script type="module">
-    const options = {
-      moduleCache: {
-        vue: Vue,
-      },
-      getFile(url) {
-        return fetch(url).then(resp =>
-          resp.ok ? resp.text() : Promise.reject(resp)
-        );
-      },
-      addStyle(styleStr) {
-        const style = document.createElement("style");
-        style.textContent = styleStr;
-        const ref = document.head.getElementsByTagName("style")[0] || null;
-        document.head.insertBefore(style, ref);
-      },
-      log(type, ...args) {
-        console.log(type, ...args);
-      },
-    };
-
-    const { loadModule, version } = window["vue3-sfc-loader"];
-
-    const app = Vue.createApp({
-      components: {
-        "base-component": Vue.defineAsyncComponent(() =>
-          loadModule("./static/components/Base.vue", options)
-        ),
-      },
-      template: `<base-component/>`,
-    });
-
-    app.mount("#app");
-  </script>
-  <!-- <script type="text/javascript" src="static/js/jquery-2.0.3.min.js"></script>
-    <script type="text/javascript" src="static/js/reconnecting-websocket.min.js"></script>
-    <script type="text/javascript" src="static/js/application.js"></script> -->
-</body>
-
-</html>
+</body></html>
