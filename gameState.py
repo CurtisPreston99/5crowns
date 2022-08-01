@@ -26,8 +26,8 @@ class crowns5GameState:
 
     def addPlayer(self) -> int:
         player = playerState()
-        self.state.playerState.append(player)
-        return len(self.state.playerState)
+        self.state['playerState'].append(player)
+        return len(self.state['playerState'])
 
     def getStateString(self,playerNum) -> str:
         json_object = json.dumps(self.state, indent = 4) 
