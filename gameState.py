@@ -43,3 +43,6 @@ class playerState:
         self.score = 0
         self.card = []
 
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+            sort_keys=True, indent=4)
