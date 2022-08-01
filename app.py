@@ -2,6 +2,7 @@ import os
 import logging
 import string
 import redis
+from gameState import crowns5GameState
 import gevent
 from flask import Flask, render_template,Blueprint
 import flask_sockets
@@ -45,12 +46,14 @@ class GameBackend:
 
     def register(self, client,room):
         """Register a WebSocket connection for Redis updates."""
-        clientList = self.clients[room]
-        if(clientList):
-            clientList.append(client)
-            self.clients[room] = clientList
-        else:
-            self.clients[room] = [client]
+        roomState = self.clients[room]
+        if(not roomState):
+            self.clients[room] = crowns5GameState()
+            roomState = self.clients[room]
+        
+        roomState.addClient(client)
+        playerNumber = roomState.addPlayer()
+        self.send(client,"{"+"'playerNum':{playerNumber}"+"}")
 
     def send(self, client, data):
         """Send given data to the registered client.
