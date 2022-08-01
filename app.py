@@ -53,7 +53,7 @@ class GameBackend:
         
         roomState.addClient(client)
         playerNumber = roomState.addPlayer()
-        self.send(client,"{"+"'playerNum':"+playerNumber+"}")
+        self.send(client,"{"+"'playerNum':"+str(playerNumber)+"}")
 
     def send(self, client, data):
         """Send given data to the registered client.
