@@ -36,7 +36,7 @@ for i in suits:
 class crowns5GameState:
     def __init__(self):
         self.state = {
-            'boardState':{'deck':[]},
+            'boardState':{'deck':[],'discard':[]},
             'playerState':[]
         }
         self.clients = []
@@ -70,10 +70,15 @@ class crowns5GameState:
 
         for i in range(6):
             deck.append(card(None,50))
-
-        random.shuffle(deck)
         
-        self.state['deck'] = deck
+        random.shuffle(deck)
+
+        for player in self.state['playerState']:
+            player.cards = deck[0:nCards]
+            deck = deck[nCards:]
+        
+        self.state['boardState']['deck'] = deck[1:]
+        self.state['boardState']['discard'] = deck[1]
 
 
 
