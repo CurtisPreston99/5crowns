@@ -33,7 +33,7 @@ class GameBackend:
     """Interface for registering and updating WebSocket clients."""
     """TODO persisting game state for reconects"""
     def __init__(self):
-        self.clients = [None]*9999
+        self.rooms = [None]*9999
         self.pubsub = redis.pubsub()
         self.pubsub.subscribe(REDIS_GAME)
 
@@ -46,10 +46,10 @@ class GameBackend:
 
     def register(self, client,room):
         """Register a WebSocket connection for Redis updates."""
-        roomState = self.clients[room]
+        roomState = self.rooms[room]
         if(not roomState):
-            self.clients[room] = crowns5GameState()
-            roomState = self.clients[room]
+            self.rooms[room] = crowns5GameState()
+            roomState = self.rooms[room]
         
         roomState.addClient(client)
         playerNumber = roomState.addPlayer()
@@ -63,7 +63,7 @@ class GameBackend:
             client.send(data)
         except ex:
             app.logger.info(ex)
-            self.clients.remove(client)
+            self.rooms.remove(client)
 
     def run(self):
         """Listens for new messages in Redis, and sends them to clients."""
@@ -72,11 +72,13 @@ class GameBackend:
             print(data)
             print(dataString)
             room,message = dataString.split(":",1)
-            roomClients = self.clients[int(room)]
-            print(room,message)
-            if(roomClients):
-                for client in roomClients:
-                    gevent.spawn(self.send, client, message)
+            roomState = self.rooms[int(room)]
+            if(roomState):
+                roomState.parseMessage(message)
+                newState = roomState.getStateString()
+                print(room,message)
+                for client in roomState.clients:
+                    gevent.spawn(self.send, client, newState)
 
     def start(self):
         """Maintains Redis subscription in the background."""

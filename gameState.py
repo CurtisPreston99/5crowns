@@ -16,7 +16,7 @@ DIAMONDS = 4
 class crowns5GameState:
     def __init__(self):
         self.state = {
-            'boardState':{},
+            'boardState':{'messageC':0},
             'playerState':[]
         }
         self.clients = []
@@ -29,11 +29,12 @@ class crowns5GameState:
         self.state['playerState'].append(player)
         return len(self.state['playerState'])
 
-    def getStateString(self,playerNum) -> str:
+    def getStateString(self) -> str:
         json_object = json.dumps(self.state, indent = 4) 
         return json_object
     
     def parseMessage(self,message):
+        self.state['boardState']['messageC'] += 1
         return message;
 
 
