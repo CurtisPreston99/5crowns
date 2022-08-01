@@ -30,7 +30,7 @@ class crowns5GameState:
         return len(self.state['playerState'])
 
     def getStateString(self) -> str:
-        json_object = json.dumps(self.state, indent = 4) 
+        json_object = json.dumps(self.state, indent = 4, cls=Encoder) 
         return json_object
     
     def parseMessage(self,message):
@@ -46,3 +46,7 @@ class playerState:
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
+
+class Encoder(json.JSONEncoder):
+        def default(self, o):
+            return o.__dict__
