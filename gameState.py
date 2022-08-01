@@ -54,7 +54,8 @@ class crowns5GameState:
         return json_object
     
     def parseMessage(self,message):
-        messageDict = json.loads(message)
+        print("message:"+message)
+        # messageDict = json.loads(message)
         self.startRound()
         # if messageDict['command']=="start":
         return message
