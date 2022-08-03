@@ -59,7 +59,6 @@ class GameBackend:
         """Send given data to the registered client.
         Automatically discards invalid connections."""
         try:
-            print(data)
             client.send(data)
         except Exception as e:
             app.logger.info(e)
@@ -67,17 +66,17 @@ class GameBackend:
     def run(self):
         """Listens for new messages in Redis, and sends them to clients."""
         for data in self.__iter_data():
-            dataString = codecs.decode(data, 'UTF-8')
             print(data)
+            dataString = codecs.decode(data, 'UTF-8')
             print(dataString)
             room,message = dataString.split(":",1)
             roomState = self.rooms[int(room)]
             if(roomState):
                 roomState.processMessage(message)
                 newState = roomState.getStateString()
-                print(room,message)
+                print(room,message[-20])
                 for client in roomState.clients:
-                    gevent.spawn(self.send, client, newState)
+                    self.send(client, newState)
 
     def start(self):
         """Maintains Redis subscription in the background."""
