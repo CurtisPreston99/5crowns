@@ -61,9 +61,8 @@ class GameBackend:
         try:
             print(data)
             client.send(data)
-        except ex:
-            app.logger.info(ex)
-            self.rooms.remove(client)
+        except Exception as e:
+            app.logger.info(e)
 
     def run(self):
         """Listens for new messages in Redis, and sends them to clients."""
