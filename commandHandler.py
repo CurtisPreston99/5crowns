@@ -33,10 +33,10 @@ class commandHandler:
     
     def takeFromDeck(self,state,args):
         currentPlayer= state['playersTurn']
-        newCard = state['deck'][0]
-        newDeck = state['deck'][1:]
+        newCard = state['boardState']['deck'][0]
+        newDeck = state['boardState']['deck'][1:]
         state['playerState'][currentPlayer].append(newCard)
-        state['deck'] = newDeck
+        state['boardState']['deck'] = newDeck
         return state
     
     def init(self,state,args):
