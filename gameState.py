@@ -4,11 +4,6 @@ from unittest.util import three_way_cmp
 
 from commandHandler import commandHandler
 
-class card:
-    def __init__(self,suit,value):
-        self.suit = suit
-        self.value = value
-
 class playerState:
     def __init__(self):
         self.score = 0

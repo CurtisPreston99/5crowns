@@ -2,7 +2,7 @@ import json
 import random
 from unittest.util import three_way_cmp
 
-from gameState import card
+from card import card
 
 suits = [
     "Hearts",
