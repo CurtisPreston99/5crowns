@@ -28,7 +28,7 @@ class commandHandler:
         type = command['comandType']
         args = command['params']
         f=self.route[type]
-        f(state,args)
+        return f(state,args)
     
     def takeFromDeck(self,state,args):
         currentPlayer= state['playersTurn']

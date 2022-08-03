@@ -46,7 +46,7 @@ class crowns5GameState:
         messageDict = None
         try:
             messageDict = json.loads(message)
-            self.commandHandler.handle(self.state,messageDict)
+            self.state = self.commandHandler.handle(self.state,messageDict)
         except:
             print("couldnt parse message:"+message)
             return
