@@ -1,13 +1,14 @@
 import json 
 import random
 from unittest.util import three_way_cmp
+from card import card
 
 from commandHandler import commandHandler
 
 class playerState:
     def __init__(self):
         self.score = 0
-        self.cards = []
+        self.cards:list[card] = []
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, 
@@ -21,7 +22,7 @@ class crowns5GameState:
 
     def __init__(self):
         self.state = {
-            'boardState':{'deck':[],'discard':[]},
+            'boardState':{'deck':[],'discard':[],'playersTurn':None},
             'playerState':[]
         }
         self.clients = []

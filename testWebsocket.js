@@ -11,3 +11,4 @@ socket.addEventListener('message', function (event) {
 });
 
 socket.send('{"comandType":"startGame","params":{}}')
+socket.send('{"comandType":"takeFromDeck","params":{}}')

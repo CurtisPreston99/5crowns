@@ -20,7 +20,8 @@ for i in suits:
 class commandHandler:
     def __init__(self):
         self.route = {
-            'startGame':self.init
+            'startGame':self.init,
+            'takeFromDeck':self.takeFromDeck
         }
     
     def handle(self,state,command):
@@ -29,10 +30,19 @@ class commandHandler:
         f=self.route[type]
         f(state,args)
     
+    def takeFromDeck(self,state,args):
+        currentPlayer= state['playersTurn']
+        newCard = state['deck'][0]
+        newDeck = state['deck'][1:]
+        state['playerState'][currentPlayer].append(newCard)
+        state['deck'] = newDeck
+        return state
+    
     def init(self,state,args):
         for player in state['playerState']:
             player.score = 0
 
+        state['playersTurn'] = 0
         return self.startRound(state,0)
 
     def startRound(self,state,round = 0):
