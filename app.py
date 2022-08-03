@@ -33,7 +33,7 @@ class GameBackend:
     """Interface for registering and updating WebSocket clients."""
     """TODO persisting game state for reconects"""
     def __init__(self):
-        self.rooms = [None]*9999
+        self.rooms: list[crowns5GameState] = [None]*9999
         self.pubsub = redis.pubsub()
         self.pubsub.subscribe(REDIS_GAME)
 
@@ -74,7 +74,7 @@ class GameBackend:
             room,message = dataString.split(":",1)
             roomState = self.rooms[int(room)]
             if(roomState):
-                roomState.parseMessage(message)
+                roomState.processMessage(message)
                 newState = roomState.getStateString()
                 print(room,message)
                 for client in roomState.clients:

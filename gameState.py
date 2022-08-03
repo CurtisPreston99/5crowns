@@ -1,5 +1,8 @@
 import json 
 import random
+from unittest.util import three_way_cmp
+
+from commandHandler import commandHandler
 
 class card:
     def __init__(self,suit,value):
@@ -18,29 +21,18 @@ class playerState:
 class Encoder(json.JSONEncoder):
         def default(self, o):
             return o.__dict__
-
-suits = [
-    "Hearts",
-    "Diamonds",
-    "Clovers",
-    "Spades",
-    "Stars"
-]
-
-cards = []
-
-for i in suits:
-    for e in range(3,13):
-        cards.append(card(i,e))
     
 class crowns5GameState:
+
     def __init__(self):
         self.state = {
             'boardState':{'deck':[],'discard':[]},
             'playerState':[]
         }
         self.clients = []
+        self.commandHandler = commandHandler()
     
+
     def addClient(self , client):
         self.clients.append(client)
 
@@ -53,32 +45,18 @@ class crowns5GameState:
         json_object = json.dumps(self.state, indent = 4, cls=Encoder) 
         return json_object
     
-    def parseMessage(self,message):
+    def processMessage(self,message):
         print("message:"+message)
-        # messageDict = json.loads(message)
-        self.startRound()
-        # if messageDict['command']=="start":
-        return message
+        messageDict = None
+        try:
+            messageDict = json.loads(message)
+            self.commandHandler.handle(self.state,messageDict)
+        except:
+            print("couldnt parse message:"+message)
+            return
         
-    def startRound(self,round = 0):
-        nCards = round + 3
-
-        deck = cards.copy()
-        deck = [deck,deck]
-
-        deck = [item for sublist in deck for item in sublist]
-
-        for i in range(6):
-            deck.append(card(None,50))
         
-        random.shuffle(deck)
 
-        for player in self.state['playerState']:
-            player.cards = deck[0:nCards]
-            deck = deck[nCards:]
-        
-        self.state['boardState']['deck'] = deck[1:]
-        self.state['boardState']['discard'] = deck[1]
 
 
 
