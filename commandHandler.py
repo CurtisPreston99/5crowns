@@ -21,7 +21,8 @@ class commandHandler:
     def __init__(self):
         self.route = {
             'startGame':self.init,
-            'takeFromDeck':self.takeFromDeck
+            'takeFromDeck':self.takeFromDeck,
+            'takeFromDiscard':self.takeFromDiscard
         }
     
     def handle(self,state,command):
@@ -30,6 +31,14 @@ class commandHandler:
         func=self.route[type]
         print(func)
         return func(state,args)
+    
+    def takeFromDiscard(self,state,args):
+        currentPlayer= state['playersTurn']
+        newCard = state['boardState']['discard'][0]
+        newDiscard = state['boardState']['discard'][1:]
+        state['playerState'][currentPlayer].cards.append(newCard)
+        state['boardState']['discard'] = newDiscard
+        return state
     
     def takeFromDeck(self,state,args):
         currentPlayer= state['playersTurn']
