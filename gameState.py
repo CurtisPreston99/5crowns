@@ -21,7 +21,7 @@ class Encoder(json.JSONEncoder):
 class crowns5GameState:
 
     def __init__(self):
-        self.state = {
+        self.state= {
             'boardState':{'deck':[],'discard':[],'playersTurn':None},
             'playerState':[]
         }

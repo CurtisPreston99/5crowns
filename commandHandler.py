@@ -74,5 +74,5 @@ class commandHandler:
             deck = deck[nCards:]
         
         state['boardState']['deck'] = deck[1:]
-        state['boardState']['discard'] = deck[1]
+        state['boardState']['discard'] = [deck[1]]
         return state
