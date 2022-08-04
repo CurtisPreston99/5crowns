@@ -29,6 +29,7 @@ class commandHandler:
         type = command['comandType']
         args = command['params']
         func=self.route[type]
+        print(type)
         print(func)
         return func(state,args)
     
