@@ -7,6 +7,7 @@ import gevent
 from flask import Flask, render_template,Blueprint
 import flask_sockets
 import codecs
+import json
 
 def add_url_rule(self, rule, _, f, **options):
     self.url_map.add(flask_sockets.Rule(rule, endpoint=f, websocket=True))
@@ -53,7 +54,7 @@ class GameBackend:
         
         roomState.addClient(client)
         playerNumber = roomState.addPlayer()
-        self.send(client,"{'event':'playerNumber','payload':{"+"'playerNum':"+str(playerNumber)+"} }")
+        self.send(client, self.makeMessage('player_number',json.dumps({"playerNum":playerNumber})));
 
     def send(self, client, data):
         """Send given data to the registered client.
@@ -77,7 +78,11 @@ class GameBackend:
                 eventString = "{'event':'state','payload':"+newState+"} }"
                 print(room,message[-20])
                 for client in roomState.clients:
-                    self.send(client, eventString)
+                    self.send(client, self.makeMessage('state',newState))
+
+    def makeMessage(self,event,args):
+        eventString = '''{"event":"'''+event+'''","payload":'''+args +''' }'''
+
 
     def start(self):
         """Maintains Redis subscription in the background."""
