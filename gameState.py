@@ -10,6 +10,7 @@ class playerState:
     def __init__(self):
         self.score = 0
         self.id = str(uuid.uuid4())
+        self.name = ""
         self.cards:list[card] = []
 
     def toJSON(self):

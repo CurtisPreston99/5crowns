@@ -3,6 +3,7 @@ import random
 from unittest.util import three_way_cmp
 
 from card import card
+from gameState import playerState
 
 suits = [
     "Hearts",
@@ -22,7 +23,8 @@ class commandHandler:
         self.route = {
             'startGame':self.init,
             'takeFromDeck':self.takeFromDeck,
-            'takeFromDiscard':self.takeFromDiscard
+            'takeFromDiscard':self.takeFromDiscard,
+            'setPlayer':self.setPlayer,
         }
     
     def handle(self,state,command):
@@ -33,6 +35,24 @@ class commandHandler:
         print(func)
         return func(state,args)
     
+    def setPlayer(self,state,args):
+        id = args['id']
+        name = args['name']
+
+        players = state['playerState']
+
+        for index, item in enumerate(players):
+            if item.id == id:
+                break
+            else:
+                index = -1
+        
+        item.name = name
+        state['playerState'][index] = item
+        
+        return state
+
+
     def takeFromDiscard(self,state,args):
         currentPlayer= state['playersTurn']
         newCard = state['boardState']['discard'][0]
