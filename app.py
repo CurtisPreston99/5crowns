@@ -1,3 +1,4 @@
+from copyreg import constructor
 import os
 import logging
 import string
@@ -54,12 +55,13 @@ class GameBackend:
         
         roomState.addClient(client)
         playerNumber = roomState.addPlayer()
-        self.send(client, self.makeMessage('player_number',json.dumps({"playerNum":playerNumber})));
+        self.send(client, self.makeMessage('player_number',json.dumps({"playerNum":playerNumber})))
 
     def send(self, client, data):
         """Send given data to the registered client.
         Automatically discards invalid connections."""
         try:
+            print(data)
             client.send(data)
         except Exception as e:
             app.logger.info(e)
