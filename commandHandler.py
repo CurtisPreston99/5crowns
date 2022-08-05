@@ -3,7 +3,6 @@ import random
 from unittest.util import three_way_cmp
 
 from card import card
-from gameState import playerState
 
 suits = [
     "Hearts",
@@ -49,7 +48,7 @@ class commandHandler:
         
         item.name = name
         state['playerState'][index] = item
-        
+
         return state
 
 
