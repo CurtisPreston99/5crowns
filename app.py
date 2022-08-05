@@ -84,6 +84,7 @@ class GameBackend:
 
     def makeMessage(self,event,args):
         eventString = '''{"event":"'''+event+'''","payload":'''+args +''' }'''
+        return eventString
 
 
     def start(self):
