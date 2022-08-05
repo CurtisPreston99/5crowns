@@ -92,7 +92,6 @@ def hello():
 @sockets.route('/room/<room>', websocket=True)
 def updates(ws,room):
     print(room)
-    ws.send(room)
     gameServer.register(ws,int(room))
     while not ws.closed:
     # Sleep to prevent *contstant* context-switches.
