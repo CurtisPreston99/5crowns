@@ -53,7 +53,7 @@ class GameBackend:
         
         roomState.addClient(client)
         playerNumber = roomState.addPlayer()
-        self.send(client,"{"+"'playerNum':"+str(playerNumber)+"}")
+        self.send(client,"{'event':'playerNumber','payload':{"+"'playerNum':"+str(playerNumber)+"} }")
 
     def send(self, client, data):
         """Send given data to the registered client.
@@ -74,9 +74,10 @@ class GameBackend:
             if(roomState):
                 roomState.processMessage(message)
                 newState = roomState.getStateString()
+                eventString = "{'event':'state','payload':"+newState+"} }"
                 print(room,message[-20])
                 for client in roomState.clients:
-                    self.send(client, newState)
+                    self.send(client, eventString)
 
     def start(self):
         """Maintains Redis subscription in the background."""
