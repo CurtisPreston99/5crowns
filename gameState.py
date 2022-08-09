@@ -58,6 +58,9 @@ class crowns5GameState:
             redisState = self.redis.get(self.redisKey)
             print("redis:")
             print(redisState)
+            parseState = json.loads(redisState)
+            print("parsed Message:")
+            print(parseState)
         except Exception as e:
             print(e)
 
