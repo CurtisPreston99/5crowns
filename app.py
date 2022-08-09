@@ -50,7 +50,7 @@ class GameBackend:
         """Register a WebSocket connection for Redis updates."""
         roomState = self.rooms[room]
         if(not roomState):
-            self.rooms[room] = crowns5GameState()
+            self.rooms[room] = crowns5GameState(room,redis)
             roomState = self.rooms[room]
         
         roomState.addClient(client)

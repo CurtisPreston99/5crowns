@@ -3,6 +3,8 @@ import random
 from unittest.util import three_way_cmp
 from card import card
 import uuid
+import redis
+from .client import  Redis
 
 from commandHandler import commandHandler
 
@@ -23,14 +25,16 @@ class Encoder(json.JSONEncoder):
     
 class crowns5GameState:
 
-    def __init__(self):
+    def __init__(self,roomNumber,redisConnection):
         self.state= {
             'boardState':{'deck':[],'discard':[],'playersTurn':None},
             'playerState':[]
         }
         self.clients = []
         self.commandHandler = commandHandler()
-    
+        self.redis = redisConnection
+        self.redisKey = "gameState:"+str(roomNumber)
+        self.redis.setex(self.redisKey,43200,self.getStateString())
 
     def addClient(self , client):
         self.clients.append(client)
@@ -44,9 +48,19 @@ class crowns5GameState:
         json_object = json.dumps(self.state, indent = 4, cls=Encoder) 
         return json_object
     
+    def parseStateString(self) -> str:
+        json_object = json.dumps(self.state, indent = 4, cls=Encoder) 
+        return json_object
+    
     def processMessage(self,message):
         print("message:"+message)
         messageDict = None
+        try:
+            redisState = self.redis.get(self.redisKey)
+            print(redisState)
+        except Exception as e:
+            print(e)
+
         try:
             messageDict = json.loads(message)
             self.state = self.commandHandler.handle(self.state,messageDict)

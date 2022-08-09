@@ -1,0 +1,14 @@
+<p>game-room works!</p>
+
+<div>
+    <div *ngFor="let player of Players">
+        {{player.name}}
+        <div *ngFor="let card of player.cards">
+            <app-card [card]="card"></app-card>
+        </div>
+    </div>
+
+    <div>
+        <button mat-raised-button color="primary" (click)="startGame()">Join Room</button>
+    </div>
+</div>

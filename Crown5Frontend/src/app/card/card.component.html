@@ -1,5 +1,5 @@
 <div class="card">
-    {{displayValue.get(card.cardValue)}}
-    <img [src]="getIcon(card.suit)" *ngIf="card.cardValue!=50">
-    <img src="./assets/suits/Joker.png" *ngIf="card.cardValue==50">
+    {{displayValue.get(card.value)}}
+    <img [src]="getIcon(card.suit)" *ngIf="card.value!=50">
+    <img src="./assets/suits/Joker.png" *ngIf="card.value==50">
 </div>

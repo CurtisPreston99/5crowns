@@ -1,0 +1,14 @@
+<div class="card">
+    <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>Room Number</mat-label>
+        <input matInput type="number" [(ngModel)]="roomNumber">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="example-form-field" appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput type="text" [(ngModel)]="playerName">
+    </mat-form-field>
+    <br>
+
+    <button mat-raised-button color="primary" (click)="joinRoom()">Join Room</button>
+</div>
