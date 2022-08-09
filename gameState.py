@@ -56,6 +56,7 @@ class crowns5GameState:
         messageDict = None
         try:
             redisState = self.redis.get(self.redisKey)
+            print("redis:")
             print(redisState)
         except Exception as e:
             print(e)

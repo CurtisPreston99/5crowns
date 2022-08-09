@@ -43,7 +43,6 @@ class GameBackend:
         for message in self.pubsub.listen():
             data = message.get('data')
             if message['type'] == 'message':
-                print(u'Sending message: {}'.format(data))
                 yield data
 
     def register(self, client,room):
@@ -61,7 +60,6 @@ class GameBackend:
         """Send given data to the registered client.
         Automatically discards invalid connections."""
         try:
-            print(data)
             client.send(data)
         except Exception as e:
             app.logger.info(e)
@@ -69,16 +67,13 @@ class GameBackend:
     def run(self):
         """Listens for new messages in Redis, and sends them to clients."""
         for data in self.__iter_data():
-            print(data)
             dataString = codecs.decode(data, 'UTF-8')
-            print(dataString)
             room,message = dataString.split(":",1)
             roomState = self.rooms[int(room)]
             if(roomState):
                 roomState.processMessage(message)
                 newState = roomState.getStateString()
                 eventString = "{'event':'state','payload':"+newState+"} }"
-                print(room,message[-20])
                 for client in roomState.clients:
                     self.send(client, self.makeMessage('state',newState))
 
@@ -100,7 +95,6 @@ def hello():
 
 @sockets.route('/room/<room>', websocket=True)
 def updates(ws,room):
-    print(room)
     gameServer.register(ws,int(room))
     while not ws.closed:
     # Sleep to prevent *contstant* context-switches.
