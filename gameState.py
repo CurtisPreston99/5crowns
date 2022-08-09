@@ -39,6 +39,7 @@ class crowns5GameState:
         self.clients.append(client)
 
     def addPlayer(self) -> int:
+        # todo use redis
         player = playerState()
         self.state['playerState'].append(player)
         return len(self.state['playerState']),player.id
@@ -46,11 +47,8 @@ class crowns5GameState:
     def getStateString(self) -> str:
         json_object = json.dumps(self.state, indent = 4, cls=Encoder) 
         return json_object
-    
-    def parseStateString(self) -> str:
-        json_object = json.dumps(self.state, indent = 4, cls=Encoder) 
-        return json_object
-    
+        # todo use redis rather stored state
+        
     def processMessage(self,message):
         print("message:"+message)
         messageDict = None
@@ -61,6 +59,7 @@ class crowns5GameState:
             parseState = json.loads(redisState)
             print("parsed Message:")
             print(parseState)
+            # todo use this state for processing messages
         except Exception as e:
             print(e)
 
