@@ -1,6 +1,5 @@
 import json 
 import random
-from turtle import st
 from unittest.util import three_way_cmp
 from card import card
 import uuid
