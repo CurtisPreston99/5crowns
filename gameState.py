@@ -25,7 +25,7 @@ class Encoder(json.JSONEncoder):
 class crowns5GameState:
 
     def __init__(self,roomNumber,redisConnection):
-        self.state= {
+        state= {
             'boardState':{'deck':[],'discard':[],'playersTurn':None},
             'playerState':[]
         }
@@ -33,44 +33,47 @@ class crowns5GameState:
         self.commandHandler = commandHandler()
         self.redis = redisConnection
         self.redisKey = "gameState:"+str(roomNumber)
-        self.redis.setex(self.redisKey,43200,self.getStateString())
+        self.redis.setex(self.redisKey,43200,self.getStateString(state))
 
     def addClient(self , client):
         self.clients.append(client)
 
     def addPlayer(self) -> int:
         # todo use redis
+        state = self.getState()
         player = playerState()
-        self.state['playerState'].append(player)
-        return len(self.state['playerState']),player.id
+        state['playerState'].append(player)
+        self.setState(state)
+        return len(state['playerState']),player.id
 
-    def getStateString(self) -> str:
-        json_object = json.dumps(self.state, indent = 4, cls=Encoder) 
+    def getStateString(self,state) -> str:
+        json_object = json.dumps(state, indent = 4, cls=Encoder) 
         return json_object
-        # todo use redis rather stored state
+    
+    def getStateStringFromReddis(self) -> str:
+        state = self.getState()
+        json_object = json.dumps(state, indent = 4, cls=Encoder) 
+        return json_object
+    
+    def getState(self):
+        redisState = self.redis.get(self.redisKey)
+        parseState = json.loads(redisState)
+        return parseState
+    
+    def setState(self,state):
+        stateString = self.getStateString(state)
+        self.redis.setex(self.redisKey,43200,stateString)
         
     def processMessage(self,message):
-        print("message:"+message)
         messageDict = None
         try:
-            redisState = self.redis.get(self.redisKey)
-            print("redis:")
-            print(redisState)
-            parseState = json.loads(redisState)
-            print("parsed Message:")
-            print(parseState)
-            # todo use this state for processing messages
-        except Exception as e:
-            print(e)
-
-        try:
             messageDict = json.loads(message)
-            self.state = self.commandHandler.handle(self.state,messageDict)
-            return self.state
+            state = self.commandHandler.handle(self.getState(),messageDict)
+            return state
         except Exception as e:
             print("couldnt parse message:"+message)
             print(e)
-            return self.state
+            return self.getState()
         
         
 
