@@ -1,5 +1,6 @@
 import json 
 import random
+from turtle import st
 from unittest.util import three_way_cmp
 from card import card
 import uuid
@@ -69,6 +70,7 @@ class crowns5GameState:
         try:
             messageDict = json.loads(message)
             state = self.commandHandler.handle(self.getState(),messageDict)
+            self.setState(state)
             return state
         except Exception as e:
             print("couldnt parse message:"+message)
