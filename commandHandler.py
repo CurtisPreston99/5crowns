@@ -70,7 +70,7 @@ class commandHandler:
     
     def init(self,state,args):
         for player in state['playerState']:
-            player.score = 0
+            player['score'] = 0
 
         state['playersTurn'] = 0
         return self.startRound(state,0)
@@ -89,7 +89,7 @@ class commandHandler:
         random.shuffle(deck)
 
         for player in state['playerState']:
-            player.cards = deck[0:nCards]
+            player['cards'] = deck[0:nCards]
             deck = deck[nCards:]
         
         state['boardState']['deck'] = deck[1:]
