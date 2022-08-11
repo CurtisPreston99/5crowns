@@ -41,7 +41,7 @@ class commandHandler:
         players = state['playerState']
 
         for index, item in enumerate(players):
-            if item.id == id:
+            if item['id'] == id:
                 break
             else:
                 index = -1
