@@ -46,7 +46,7 @@ class commandHandler:
             else:
                 index = -1
         
-        item.name = name
+        item['name'] = name
         state['playerState'][index] = item
 
         return state
