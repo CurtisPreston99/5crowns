@@ -72,8 +72,7 @@ class GameBackend:
             roomState = self.rooms[int(room)]
             if(roomState):
                 roomState.processMessage(message)
-                newState = roomState.getStateString()
-                eventString = "{'event':'state','payload':"+newState+"} }"
+                newState = roomState.getStateStringFromReddis()
                 for client in roomState.clients:
                     self.send(client, self.makeMessage('state',newState))
 
