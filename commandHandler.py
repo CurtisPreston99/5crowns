@@ -56,7 +56,7 @@ class commandHandler:
         currentPlayer= state['playersTurn']
         newCard = state['boardState']['discard'][0]
         newDiscard = state['boardState']['discard'][1:]
-        state['playerState'][currentPlayer].cards.append(newCard)
+        state['playerState'][currentPlayer]['cards'].append(newCard)
         state['boardState']['discard'] = newDiscard
         return state
     
@@ -64,7 +64,7 @@ class commandHandler:
         currentPlayer= state['playersTurn']
         newCard = state['boardState']['deck'][0]
         newDeck = state['boardState']['deck'][1:]
-        state['playerState'][currentPlayer].cards.append(newCard)
+        state['playerState'][currentPlayer]['cards'].append(newCard)
         state['boardState']['deck'] = newDeck
         return state
     
