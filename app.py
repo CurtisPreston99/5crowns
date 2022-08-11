@@ -92,6 +92,10 @@ gameServer.start()
 def hello():
     return render_template('index.html')
 
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("index.html")
+
 @sockets.route('/room/<room>', websocket=True)
 def updates(ws,room):
     gameServer.register(ws,int(room))
