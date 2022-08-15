@@ -1,6 +1,18 @@
-<p>game-room works!</p>
-
 <div>
+
+    <div>
+        <p>board</p>
+        <button (click)="takeFromDiscard()">
+            <app-card [card]="TopOfDiscard"></app-card>
+        </button>
+        
+        <button (click)="takeFromDeck()">
+            pick up
+        </button>
+        
+        
+    </div>
+
     <div *ngFor="let player of Players">
         {{player.name}}
         <div *ngFor="let card of player.cards">

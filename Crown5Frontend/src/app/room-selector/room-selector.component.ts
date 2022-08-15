@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Player } from '../entities/player';
+import { GameStateManagementService } from '../game-state-management.service';
 import { WebsocketService } from '../services/websocket.service';
 
 @Component({
@@ -8,25 +10,21 @@ import { WebsocketService } from '../services/websocket.service';
   templateUrl: './room-selector.component.html',
   styleUrls: ['./room-selector.component.less']
 })
-export class RoomSelectorComponent implements OnDestroy {
+export class RoomSelectorComponent {
   public roomNumber: number | null;
   public playerName: string;
   private websocketSub: Subscription;
 
   constructor(private _websocketService: WebsocketService,
-    private _router: Router) { }
-
-  ngOnDestroy(): void {
-    this.websocketSub?.unsubscribe();
-  }
+    private _router: Router,
+    private _gameStateManagementService: GameStateManagementService,
+  ) { }
 
   joinRoom() {
-    this._websocketService.connectToRoom(this.roomNumber as number);
-    this.websocketSub = this._websocketService.subscribeToTopic("player_number").subscribe(a => {
+    let p = new Player();
+    p.name = this.playerName;
+    this._gameStateManagementService.PlayerInfo = p;
 
-      this._websocketService.sendMessage("setPlayer", { id: (a as any)['playerId'], name: this.playerName })
-      this._router.navigate(['game']);
-
-    })
+    this._router.navigate(['game', this.roomNumber]);
   }
 }

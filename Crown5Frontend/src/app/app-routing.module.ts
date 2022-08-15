@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: 'home', component: HomePageComponent },
   { path: 'room-selector', component: RoomSelectorComponent },
   { path: 'game', component: GameRoomComponent },
+  { path: 'game/:id', component: GameRoomComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 
